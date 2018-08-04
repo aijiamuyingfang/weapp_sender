@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">爱家母婴客户端</string>
+
+    <string name="tab_thirdsend_itle">快递</string>
+    <string name="tab_ownsend_title">送货</string>
+    <string name="tab_pickup_title">自取</string>
+    <string name="tab_preorder_title">预约</string>
+    <string name="tab_finished_title">已完成</string>
+
+    <string name="tab_thirdsend_layout_unstart_title">未开始</string>
+    <!--<string name="tab_thirdsend_layout_unstart_tag">未开始</string>-->
+    <string name="tab_thirdsend_layout_doing_title">进行中</string>
+    <!--<string name="tab_thirdsend_layout_doing_tag">进行中</string>-->
+
+    <string name="tab_ownsend_layout_unstart_title">未开始</string>
+    <!--<string name="tab_ownsend_layout_unstart_tag">未开始</string>-->
+    <string name="tab_ownsend_layout_doing_title">进行中</string>
+    <!--<string name="tab_ownsend_layout_doing_tag">进行中</string>-->
+
+    <string name="tab_pickup_layout_unstart_title">未开始</string>
+    <!--<string name="tab_pickup_layout_unstart_tag">未开始</string>-->
+    <string name="tab_pickup_layout_doing_title">进行中</string>
+    <!--<string name="tab_pickup_layout_doing_tag">进行中</string>-->
+
+    <string name="tab_preorder_layout_order_title">订单</string>
+    <!--<string name="tab_preorder_layout_order_tag">订单</string>-->
+    <string name="tab_preorder_layout_good_title">商品</string>
+    <!--<string name="tab_preorder_layout_good_tag">商品</string>-->
+
+    <string name="tab_finished_layout_thirdsend_title">快递</string>
+    <!--<string name="tab_finished_layout_thirdsend_tag">快递</string>-->
+    <string name="tab_finished_layout_ownsend_title">送货</string>
+    <!--<string name="tab_finished_layout_ownsend_tag">送货</string>-->
+    <string name="tab_finished_layout_pickup_title">自取</string>
+    <!--<string name="tab_finished_layout_pickup_tag">自取</string>-->
+    <string name="tab_finished_layout_preorder_title">预约</string>
+    <!--<string name="tab_finished_layout_preorder_tag">预约</string>-->
+</resources>

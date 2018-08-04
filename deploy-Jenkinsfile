@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '25'))
+        disableConcurrentBuilds()
+        timestamps()
+        skipDefaultCheckout()
+    }
+
+    stages {
+        
+        stage('get code') {
+            steps {
+                git 'https://github.com/fuyoushengwu/weapp_sender.git'
+            }
+        }
+
+        stage('package') {
+            steps {
+                sh 'chmod +x gradlew'
+                sh './gradlew clean build'
+            }
+        }
+		
+		stage('deploy') {
+            steps {
+                retry(5) {
+                    sshPublisher(
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: '172.16.0.4-SSH', 
+                                transfers: [
+                                    sshTransfer(
+                                        execCommand: 'rm -rf weapp_sender/*'
+                                    ),
+                                    sshTransfer(
+                                        sourceFiles: 'app/build/outputs/apk/**',
+                                        removePrefix: 'app/build/outputs/apk/',
+										remoteDirectory: 'weapp_sender'
+                                    )
+                                ], 
+                                verbose: true
+                            )
+                        ]
+                    )
+                }              
+
+            }
+        }
+    }
+
+}

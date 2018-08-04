@@ -14,13 +14,11 @@ pipeline {
                 git 'https://github.com/fuyoushengwu/weapp_sender.git'
             }
         }
-    }
 
-    post {
-
-        success {
-            dir("sources") {
-                archive 'target/*.jar'
+        stage('code analysis') {
+            steps {
+                sh 'chmod +x gradlew'
+                sh './gradlew sonarqube -Dsonar.projectKey=weapp_sender -Dsonar.organization=fuyoushengwu-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=1a1a48e2f6cd3453ae98de53fc46ef27b53732f7'
             }
         }
     }

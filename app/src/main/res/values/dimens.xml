@@ -1,0 +1,13 @@
+<resources>
+
+    <!--app基本的字体大小-->
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="buttonCornerSize">2dp</dimen>
+    <dimen name="largePadding">16dp</dimen>
+    <dimen name="normalButtonHeight">48dp</dimen>
+    <dimen name="bigButtonTextSize">18dp</dimen>
+    <dimen name="smallButtonHeight">32dp</dimen>
+    <dimen name="base_text_size">16sp</dimen>
+    <dimen name="big_text_size">18sp</dimen>
+    <dimen name="ebpay_text_size_18">18sp</dimen>
+</resources>
