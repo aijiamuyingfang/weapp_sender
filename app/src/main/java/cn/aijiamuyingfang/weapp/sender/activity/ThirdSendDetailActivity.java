@@ -6,21 +6,27 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.aijiamuyingfang.client.rest.api.ShopOrderControllerApi;
 import cn.aijiamuyingfang.commons.domain.address.RecieveAddress;
+import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
 import cn.aijiamuyingfang.commons.domain.shoporder.ShopOrder;
 import cn.aijiamuyingfang.commons.domain.shoporder.ShopOrderStatus;
 import cn.aijiamuyingfang.commons.domain.shoporder.request.UpdateShopOrderStatusRequest;
 import cn.aijiamuyingfang.commons.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.ShopOrderControllerClient;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
@@ -30,8 +36,11 @@ import cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
 import cn.aijiamuyingfang.weapp.sender.R;
 import cn.aijiamuyingfang.weapp.sender.recycleadapter.DetailActivityGoodAdapter;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class ThirdSendDetailActivity extends BaseActivity {
+    private static final String TAG = ThirdSendDetailActivity.class.getName();
     @BindView(R.id.toolbar)
     WeToolBar toolBar;
     @BindView(R.id.recycler_view)
@@ -62,8 +71,9 @@ public class ThirdSendDetailActivity extends BaseActivity {
     @BindView(R.id.btn_save)
     Button mSaveButton;
 
-
     private ShopOrder mShopOrder;
+    private ShopOrderControllerApi shopOrderControllerApi = new ShopOrderControllerClient();
+    private List<Disposable> disposableList = new ArrayList<>();
 
     @Override
     protected void init() {
@@ -135,21 +145,45 @@ public class ThirdSendDetailActivity extends BaseActivity {
         updateBean.setOperator(operator);
         updateBean.setThirdsendCompany(thirdsendCompany);
         updateBean.setThirdsendno(thirdsendNo);
-        shopOrderControllerApi.updateShopOrderStatus(CommonApp.getApplication().getUserToken(), mShopOrder.getId(), updateBean).subscribe(responseBean -> {
-            if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                ThirdSendDetailActivity.this.finish();
-            } else {
-                mSaveButton.setClickable(true);
-                ToastUtils.showSafeToast(ThirdSendDetailActivity.this, "服务端异常,请稍后再试");
-            }
-        });
+        shopOrderControllerApi.updateShopOrderStatus(CommonApp.getApplication().getUserToken(), mShopOrder.getId(), updateBean)
+                .subscribe(new Observer<ResponseBean<Void>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposableList.add(d);
+                    }
+
+                    @Override
+                    public void onNext(ResponseBean<Void> responseBean) {
+                        if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                            ThirdSendDetailActivity.this.finish();
+                        } else {
+                            Log.e(TAG, responseBean.getMsg());
+                            mSaveButton.setClickable(true);
+                            ToastUtils.showSafeToast(ThirdSendDetailActivity.this, "服务端异常,请稍后再试");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "update shoporder status failed", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i(TAG, "update shoporder status complete");
+                    }
+                });
 
     }
-
-    private ShopOrderControllerApi shopOrderControllerApi = new ShopOrderControllerClient();
 
     @Override
     public int getContentResourceId() {
         return R.layout.activity_thirdsend_detail;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxJavaUtils.dispose(disposableList);
     }
 }

@@ -43,7 +43,6 @@
         <activity android:name=".activity.OwnSendDetailActivity" />
         <activity android:name=".activity.PickupDetailActivity" />
         <activity android:name=".activity.PreOrderDetailActivity" />
-        <activity android:name=".activity.FinishedDetailActivity" />
     </application>
 
 </manifest>

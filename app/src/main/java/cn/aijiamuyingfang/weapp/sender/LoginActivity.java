@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.aijiamuyingfang.client.rest.api.AuthControllerApi;
@@ -25,6 +28,7 @@ import cn.aijiamuyingfang.commons.domain.user.Gender;
 import cn.aijiamuyingfang.commons.domain.user.response.TokenResponse;
 import cn.aijiamuyingfang.commons.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.AuthControllerClient;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
 import io.reactivex.Observer;
@@ -75,7 +79,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private AuthControllerApi authControllerApi = new AuthControllerClient();
-    private Disposable getTokenDisposable;
+    private List<Disposable> authDisposableList = new ArrayList<>();
 
     private void attemptLogin() {
         mAcountEditView.setError(null);
@@ -89,13 +93,14 @@ public class LoginActivity extends BaseActivity {
             authControllerApi.getToken(account, null, null, Gender.MALE).subscribe(new Observer<ResponseBean<TokenResponse>>() {
                 @Override
                 public void onSubscribe(Disposable d) {
-                    getTokenDisposable = d;
+                    authDisposableList.add(d);
                 }
 
                 @Override
                 public void onNext(ResponseBean<TokenResponse> responseBean) {
                     showProgress(false);
                     if (!ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                        Log.e(TAG, responseBean.getMsg());
                         mAcountEditView.setError("账号不存在");
                         mAcountEditView.requestFocus();
                         return;
@@ -141,11 +146,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getTokenDisposable.dispose();
-    }
 
     @Override
     protected int getContentResourceId() {
@@ -179,5 +179,11 @@ public class LoginActivity extends BaseActivity {
                 mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxJavaUtils.dispose(authDisposableList);
     }
 }

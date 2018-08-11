@@ -39,9 +39,12 @@ public final class PreOrderFragment extends RefreshableTabFragment<Object, PageR
 
     private List<Integer> mTabTitleList = Arrays.asList(R.string.tab_preorder_layout_good_title, R.string.tab_preorder_layout_order_title);
     private List<CommonAdapter> mAdapterList = Arrays.asList(
-            new PreOrderGoodAdapter(getContext(), new ArrayList<>()),
-            new PreOrderOrderAdapter(getContext(), new ArrayList<>())
+            new PreOrderGoodAdapter(CommonApp.getApplication(), new ArrayList<>()),
+            new PreOrderOrderAdapter(CommonApp.getApplication(), new ArrayList<>())
     );
+    private int[] mTotalpageArray = new int[]{1, 1};
+    private int[] mCurrentPageArray = new int[]{1, 1};
+    private int mTabIndex = 0;
     private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -55,7 +58,6 @@ public final class PreOrderFragment extends RefreshableTabFragment<Object, PageR
             return false;
         }
     };
-    private int mCurTag;
     private ShopOrderControllerApi shopOrderControllerApi = new ShopOrderControllerClient();
     private Observable<ResponseBean<PageResponse<Object>>> getPreOrderGoodList;
     private Observable<ResponseBean<PageResponse<Object>>> getShopOrderList;
@@ -74,10 +76,31 @@ public final class PreOrderFragment extends RefreshableTabFragment<Object, PageR
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        mCurTag = (int) tab.getTag();
-        int tabIndex = mTabTitleList.indexOf(mCurTag);
-        mAdapter = mAdapterList.get(tabIndex);
+        int tag = (int) tab.getTag();
+        mTabIndex = mTabTitleList.indexOf(tag);
+        mAdapter = mAdapterList.get(mTabIndex);
+        mRecyclerView.setAdapter(mAdapter);
         super.refreshData();
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return mCurrentPageArray[mTabIndex];
+    }
+
+    @Override
+    public void setCurrentPage(int currentpage) {
+        mCurrentPageArray[mTabIndex] = currentpage;
+    }
+
+    @Override
+    public int getTotalPage() {
+        return mTotalpageArray[mTabIndex];
+    }
+
+    @Override
+    public void setTotalPage(int totalpage) {
+        mTotalpageArray[mTabIndex] = totalpage;
     }
 
     @NonNull
@@ -127,10 +150,10 @@ public final class PreOrderFragment extends RefreshableTabFragment<Object, PageR
                 });
             }
         }
-        switch (mCurTag) {
-            case R.string.tab_preorder_layout_good_title:
+        switch (mTabIndex) {
+            case 0:
                 return getPreOrderGoodList;
-            case R.string.tab_preorder_layout_order_title:
+            case 1:
                 return getShopOrderList;
             default:
                 return getPreOrderGoodList;

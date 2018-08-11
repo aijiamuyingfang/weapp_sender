@@ -37,9 +37,12 @@ public final class OwnSendFragment extends RefreshableTabFragment<ShopOrder, Get
     private ShopOrderControllerApi shopOrderControllerApi = new ShopOrderControllerClient();
     private List<Integer> mTabTitleList = Arrays.asList(R.string.tab_ownsend_layout_unstart_title, R.string.tab_ownsend_layout_doing_title);
     private List<CommonAdapter<ShopOrder>> mAdapterList = Arrays.asList(
-            new OwnSendUnStartAdapter(getContext(), new ArrayList<>()),
-            new OwnSendDoingAdapter(getContext(), new ArrayList<>())
+            new OwnSendUnStartAdapter(CommonApp.getApplication(), new ArrayList<>()),
+            new OwnSendDoingAdapter(CommonApp.getApplication(), new ArrayList<>())
     );
+    private int[] mTotalpageArray = new int[]{1, 1};
+    private int[] mCurrentPageArray = new int[]{1, 1};
+    private int mTabIndex = 0;
     private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -71,8 +74,9 @@ public final class OwnSendFragment extends RefreshableTabFragment<ShopOrder, Get
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int tag = (int) tab.getTag();
-        int tabIndex = mTabTitleList.indexOf(tag);
-        mAdapter = mAdapterList.get(tabIndex);
+        mTabIndex = mTabTitleList.indexOf(tag);
+        mAdapter = mAdapterList.get(mTabIndex);
+        mRecyclerView.setAdapter(mAdapter);
         mCurShopOrderSendType.clear();
         mCurShopOrderStatus.clear();
         switch (tag) {
@@ -88,6 +92,26 @@ public final class OwnSendFragment extends RefreshableTabFragment<ShopOrder, Get
                 break;
         }
         super.refreshData();
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return mCurrentPageArray[mTabIndex];
+    }
+
+    @Override
+    public void setCurrentPage(int currentpage) {
+        mCurrentPageArray[mTabIndex] = currentpage;
+    }
+
+    @Override
+    public int getTotalPage() {
+        return mTotalpageArray[mTabIndex];
+    }
+
+    @Override
+    public void setTotalPage(int totalpage) {
+        mTotalpageArray[mTabIndex] = totalpage;
     }
 
     @NonNull

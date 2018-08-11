@@ -9,6 +9,8 @@
         android:layout_height="match_parent"
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
@@ -39,7 +41,7 @@
                 style="@style/editText_base"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:hint="请输入操作员姓名"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -47,7 +49,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,10 +70,8 @@
                 android:id="@+id/send_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:textSize="20sp" />
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -88,7 +90,7 @@
                 android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -115,7 +117,7 @@
                     android:id="@+id/send_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -136,7 +138,7 @@
                     android:id="@+id/address_detailAddress"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -157,7 +159,7 @@
                     android:id="@+id/shoporder_no"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -178,7 +180,7 @@
                     android:id="@+id/shoporder_createtime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -200,7 +202,7 @@
                     style="@style/editText_base"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:hint="请填写快递公司"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -223,7 +225,7 @@
                     style="@style/editText_base"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:hint="请输入快递单号"
                     android:textSize="20sp" />
             </LinearLayout>

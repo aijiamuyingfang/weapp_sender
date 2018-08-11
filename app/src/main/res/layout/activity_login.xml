@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="16dp"
@@ -37,7 +39,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_logo" />
+                android:src="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/tv_title"
